@@ -4,8 +4,8 @@ import axios from 'axios';
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
 
-const client_ID = "e42429a78f551d96c4a8"
-const client_SECRET = "048ee6faaa175b55350b5405bb92edc4359d8328"
+const client_ID = ""
+
 const repos = ref([]);
 
 function login(){

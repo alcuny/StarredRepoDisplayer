@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 const axios = require('axios');
 
-const client_ID = "e42429a78f551d96c4a8"
-const client_SECRET = "cb073dfa4a8c943079866bd0eb0827c2df28c1db"
+const client_ID = ""
+const client_SECRET = ""
 
 router.post('/getToken', async (req, res) => {
     const code = req.body.code;
