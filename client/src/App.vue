@@ -7,10 +7,12 @@ import TheWelcome from './components/TheWelcome.vue'
 const client_ID = ""
 
 const repos = ref([]);
+const isLoggedIn = ref(false); // Initially, the user is not logged in
 
 function login(){
   window.location.assign('https://github.com/login/oauth/authorize?client_id='+client_ID)
 }
+
 
 function getData() {
   const authToken = localStorage.getItem("accessToken");
@@ -31,20 +33,27 @@ function getData() {
   
 }
 
-const handleButtonClick = () => {
-  // Call getUserData function when button is pressed
-  getData();
-};
+onMounted(() => {
+  const authToken = localStorage.getItem("accessToken");
+  if (authToken) {
+    isLoggedIn.value = true; // If access token exists, the user is logged in
+    getData();
+  } else {
+    console.log('Access token not found in localStorage. Component will not mount.');
+  }
+});
 
 onMounted(() => {
   const query = window.location.search
   const params = new URLSearchParams(query)
   const code = params.get('code')
   console.log(code)
+  console.log(isLoggedIn)
   if(code && localStorage.getItem("accessToken") === null){
 
   axios.post('http://localhost:3000/api/getToken', {
-    code: code
+    code: code,
+    client_id: client_ID
   }, {
     // Config object
     headers: {
@@ -78,14 +87,16 @@ onMounted(() => {
     
     
       
-      <c-login-button @click="login" src="/assets/github-mark-white.svg">Login</c-login-button>
+      <!-- Conditionally render the login button -->
+    <c-login-button @click="login" src="/assets/github-mark-white.svg">Login</c-login-button>
       
-      <button @click="handleButtonClick">User Data</button>
+    
       
     
   </header>
 
-  <main>
+  <main style="overflow: auto;">
+  
     <c-table responsive>
     <table>
       <thead>
@@ -107,35 +118,28 @@ onMounted(() => {
         </tr>
       </tbody>
     </table>
-  </c-table>
+    </c-table>
+  
   </main>
 </template>
 
 <style scoped>
 header {
-  line-height: 1.5;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* Ensure the header spans the entire width */
+  background-color: #ffffff; /* Example background color */
+  z-index: 1000; /* Ensure the header is above other content */
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+/*c-table {
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
+}*/
+
+
+
+
 </style>

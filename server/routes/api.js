@@ -2,11 +2,12 @@ var express = require('express');
 var router = express.Router();
 const axios = require('axios');
 
-const client_ID = ""
+
 const client_SECRET = ""
 
 router.post('/getToken', async (req, res) => {
     const code = req.body.code;
+    const client_ID = req.body.client_id;
     console.log(code)
     const urlParams = "?client_id=" + client_ID + "&client_secret=" + client_SECRET + "&code=" + code;
 
