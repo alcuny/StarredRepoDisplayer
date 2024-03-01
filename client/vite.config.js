@@ -20,9 +20,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  server: {
-    proxy: 'http://localhost:3000'
-  }
+  
 })
 
 
